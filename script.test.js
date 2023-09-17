@@ -1,0 +1,1 @@
+const { addToken } = require("./script");

@@ -1,0 +1,25 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px); /* Adjust the size of the cells as needed */
+    gap: 5px;
+    width: 320px; /* Adjust the width of the board as needed */
+    margin: 20px auto;
+}
+
+.cell {
+    width: 100px; /* Adjust the size of the cells as needed */
+    height: 100px; /* Adjust the size of the cells as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* Cell background color */
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid #ccc; /* Cell border */
+}
+
+.cell:hover {
+    background-color: #e0e0e0; /* Cell color on hover */
+}
+
