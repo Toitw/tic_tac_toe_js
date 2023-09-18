@@ -63,7 +63,7 @@ const gameBoard = (() => {
     return { board, addToken, checkWin, freeSlot, checkDraw };
 })();
 
-const createPlayer = (name, symbol) => {
+const createPlayer = (name, symbol, points) => {
 
     const getSymbol = () => {
         return symbol;
@@ -77,12 +77,20 @@ const createPlayer = (name, symbol) => {
         currentPlayer = currentPlayer === player1 ? player2 : player1;
     };
 
+    const addPoint = () => {
+        points++;
+    };
 
-    return { getName, getSymbol, changePlayer };
+    const getPoints = () => {
+        return points;
+    }
+
+
+    return { getName, getSymbol, changePlayer, addPoint, getPoints };
 }
 
-const player1 = createPlayer("Player 1", "X");
-const player2 = createPlayer("Player 2", "O");
+const player1 = createPlayer("Player 1", "X", 0);
+const player2 = createPlayer("Player 2", "O", 0);
 let currentPlayer = player1;
 
 const displayController = (() => {
@@ -92,6 +100,7 @@ const displayController = (() => {
     const changePlayer = currentPlayer.changePlayer;
     const checkWin = gameBoard.checkWin;
     const checkDraw = gameBoard.checkDraw;
+    const addPoint = currentPlayer.addPoint;
 
     const dropToken = (event) => {
         const modalMessage = document.getElementById("modal-message");
@@ -108,6 +117,7 @@ const displayController = (() => {
         }
       
         if (checkWin() === true) {
+          addPoint();
           displayBoard();
           setTimeout(() => {
             modalMessage.textContent = `${currentPlayer.getName()} wins!`;
@@ -117,7 +127,7 @@ const displayController = (() => {
               resultModal.style.display = "none";
             });
           }, 100);
-          changePlayer();
+            changePlayer();
         } else {
           if (checkDraw() === true) {
             displayBoard();
@@ -138,6 +148,8 @@ const displayController = (() => {
     cells.forEach(cell => {
     cell.addEventListener('click', dropToken);
     });
+    const score1 = document.querySelector(".score1");
+    const score2 = document.querySelector(".score2");
     
     const displayBoard = () => {
         const cells = document.querySelectorAll('.cell');
@@ -150,6 +162,8 @@ const displayController = (() => {
             cell.textContent = "";
           }
         });
+        score1.textContent = player1.getPoints();
+        score2.textContent = player2.getPoints();
     };
 
     const resetBoard = () => {
@@ -175,11 +189,6 @@ const displayController = (() => {
 
     return { board, dropToken, displayBoard, resetBoard };
 })();
-
-const playRound = () => {
-    displayController.displayBoard();
-
-}
 
 
 //TESTS
