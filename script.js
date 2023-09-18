@@ -26,21 +26,21 @@ const gameBoard = (() => {
         // check rows
         for (let i = 0; i < board.length; i++) {
         if (board[i][0] && board[i][0] === board[i][1] && board[i][0] === board[i][2]) {
-            return board[i][0];
+            return true;
         }
         }
         // check columns
         for (let i = 0; i < board.length; i++) {
         if (board[0][i] && board[0][i] === board[1][i] && board[0][i] === board[2][i]) {
-            return board[0][i];
+            return true;
         }
         }
         // check diagonals
         if (board[0][0] && board[0][0] === board[1][1] && board[0][0] === board[2][2]) {
-        return board[0][0];
+            return true;
         }
         if (board[0][2] && board[0][2] === board[1][1] && board[0][2] === board[2][0]) {
-        return board[0][2];
+            return true;
         }
         return false;
     }
@@ -76,6 +76,7 @@ const displayController = (() => {
     const freeSlot = gameBoard.freeSlot;
     const addToken = gameBoard.addToken;
     const changePlayer = currentPlayer.changePlayer;
+    const checkWin = gameBoard.checkWin;
 
     const dropToken = (event) => {
         const cell = event.target;
@@ -86,6 +87,14 @@ const displayController = (() => {
             addToken(currentPlayer.getSymbol(), row, col);
             displayBoard();
             changePlayer();
+        }
+
+        if (checkWin() === true) {
+            displayBoard();
+            setTimeout(() => {
+                alert(`${currentPlayer.getName()} wins!`);
+                resetBoard();
+            }, 100);
         }
 
     };
