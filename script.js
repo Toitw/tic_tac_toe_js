@@ -45,8 +45,22 @@ const gameBoard = (() => {
         return false;
     }
 
+    const checkDraw = () => {
+        if (checkWin() === true) {
+          return false;
+        }
+        for (let i = 0; i < board.length; i++) {
+          for (let j = 0; j < board[i].length; j++) {
+            if (board[i][j].length === 0) {
+              return false;
+            }
+          }
+        }
+        return true;
+    };
 
-    return { board, addToken, checkWin, freeSlot };
+
+    return { board, addToken, checkWin, freeSlot, checkDraw };
 })();
 
 const createPlayer = (name, symbol) => {
@@ -77,6 +91,7 @@ const displayController = (() => {
     const addToken = gameBoard.addToken;
     const changePlayer = currentPlayer.changePlayer;
     const checkWin = gameBoard.checkWin;
+    const checkDraw = gameBoard.checkDraw;
 
     const dropToken = (event) => {
         const cell = event.target;
@@ -93,8 +108,17 @@ const displayController = (() => {
             displayBoard();
             setTimeout(() => {
                 alert(`${currentPlayer.getName()} wins!`);
+                changePlayer();
                 resetBoard();
             }, 100);
+        } else {
+            if (checkDraw() === true) {
+                displayBoard();
+                setTimeout(() => {
+                    alert("It's a draw!");
+                    resetBoard();
+                }, 100);
+            }
         }
 
     };
@@ -140,6 +164,11 @@ const displayController = (() => {
 
     return { board, dropToken, displayBoard, resetBoard };
 })();
+
+const playRound = () => {
+    displayController.displayBoard();
+
+}
 
 
 //TESTS
