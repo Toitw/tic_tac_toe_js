@@ -1,1 +1,1 @@
-const { addToken, testWin, getName, getSymbol } = require("./script");
+const { addToken, testWin, getName, getSymbol, changePlayer } = require("./script");

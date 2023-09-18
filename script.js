@@ -9,6 +9,7 @@ const gameBoard = (() => {
     }
 
     const addToken = (token, row, col) => {
+        console.log(`Adding ${token} to ${row}, ${col}`);
         board[row][col] = token;
     }
 
@@ -48,15 +49,7 @@ const gameBoard = (() => {
     return { board, addToken, checkWin, freeSlot };
 })();
 
-const displayController = (() => {
-    const board = gameBoard.board;
-
-    return { board };
-})();
-
-const player = (name, symbol) => {
-    this.name = name;
-    this.symbol = symbol;
+const createPlayer = (name, symbol) => {
 
     const getSymbol = () => {
         return symbol;
@@ -66,12 +59,54 @@ const player = (name, symbol) => {
         return name;
     }
 
-    return { getName, getSymbol };
+    const changePlayer = () => {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+    };
+
+
+    return { getName, getSymbol, changePlayer };
 }
 
-const player1 = player("Player 1", "X");
-const player2 = player("Player 2", "O");
+const player1 = createPlayer("Player 1", "X");
+const player2 = createPlayer("Player 2", "O");
+const currentPlayer = player1;
 
+const displayController = (() => {
+    const board = gameBoard.board;
+    const freeSlot = gameBoard.freeSlot;
+    const addToken = gameBoard.addToken;
+
+    const dropToken = (event) => {
+        const cell = event.target;
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+    
+        if (freeSlot(row, col)) {
+          addToken(currentPlayer.getSymbol(), row, col);
+          displayBoard();
+        }
+    };
+
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+    cell.addEventListener('click', dropToken);
+    });
+    
+    const displayBoard = () => {
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+          const row = parseInt(cell.dataset.row);
+          const col = parseInt(cell.dataset.col);
+          if (board[row][col].length > 0) {
+            cell.textContent = board[row][col];
+          } else {
+            cell.textContent = "";
+          }
+        });
+    };
+
+    return { board, dropToken, displayBoard };
+})();
 
 
 //TESTS
@@ -112,7 +147,7 @@ describe("gameBoard", () => {
     });
 });
 
-describe("player", () => {
+describe("createPlayer", () => {
     test("getName should return the player's name", () => {
       expect(player1.getName()).toBe("Player 1");
       expect(player2.getName()).toBe("Player 2");
@@ -121,5 +156,11 @@ describe("player", () => {
     test("getSymbol should return the player's symbol", () => {
       expect(player1.getSymbol()).toBe("X");
       expect(player2.getSymbol()).toBe("O");
+    });
+
+    test("changePlayer should change the current player", () => {
+        expect(currentPlayer).toBe(player1);
+        currentPlayer.changePlayer();
+        expect(currentPlayer).toBe(player2);
     });
 });
