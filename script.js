@@ -94,33 +94,44 @@ const displayController = (() => {
     const checkDraw = gameBoard.checkDraw;
 
     const dropToken = (event) => {
+        const modalMessage = document.getElementById("modal-message");
+        const resultModal = document.querySelector(".modal");
+        const resetButton = document.getElementById("reset-button");
         const cell = event.target;
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
-    
+      
         if (freeSlot(row, col) === true) {
-            addToken(currentPlayer.getSymbol(), row, col);
-            displayBoard();
-            changePlayer();
+          addToken(currentPlayer.getSymbol(), row, col);
+          displayBoard();
+          changePlayer();
         }
-
+      
         if (checkWin() === true) {
+          displayBoard();
+          setTimeout(() => {
+            modalMessage.textContent = `${currentPlayer.getName()} wins!`;
+            resultModal.style.display = "block";
+            resetButton.addEventListener("click", function() {
+              resetBoard();
+              resultModal.style.display = "none";
+            });
+          }, 100);
+          changePlayer();
+        } else {
+          if (checkDraw() === true) {
             displayBoard();
             setTimeout(() => {
-                alert(`${currentPlayer.getName()} wins!`);
-                changePlayer();
-                resetBoard();
-            }, 100);
-        } else {
-            if (checkDraw() === true) {
-                displayBoard();
-                setTimeout(() => {
-                    alert("It's a draw!");
+                modalMessage.textContent = `It's a draw! Try again!`;
+                resultModal.style.display = "block";
+                resetButton.addEventListener("click", function() {
                     resetBoard();
-                }, 100);
-            }
+                    resultModal.style.display = "none";
+                });
+            }, 100);
+            changePlayer();
+          }
         }
-
     };
 
     const cells = document.querySelectorAll('.cell');
