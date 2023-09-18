@@ -69,22 +69,25 @@ const createPlayer = (name, symbol) => {
 
 const player1 = createPlayer("Player 1", "X");
 const player2 = createPlayer("Player 2", "O");
-const currentPlayer = player1;
+let currentPlayer = player1;
 
 const displayController = (() => {
     const board = gameBoard.board;
     const freeSlot = gameBoard.freeSlot;
     const addToken = gameBoard.addToken;
+    const changePlayer = currentPlayer.changePlayer;
 
     const dropToken = (event) => {
         const cell = event.target;
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
     
-        if (freeSlot(row, col)) {
-          addToken(currentPlayer.getSymbol(), row, col);
-          displayBoard();
+        if (freeSlot(row, col) === true) {
+            addToken(currentPlayer.getSymbol(), row, col);
+            displayBoard();
+            changePlayer();
         }
+
     };
 
     const cells = document.querySelectorAll('.cell');
@@ -105,7 +108,30 @@ const displayController = (() => {
         });
     };
 
-    return { board, dropToken, displayBoard };
+    const resetBoard = () => {
+        //Frontend
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            board[row][col] = "";
+            cell.textContent = "";
+        });
+        //Backend
+        gameBoard.board = [];
+        for (let i = 0; i < 3; i++) {
+            gameBoard.board.push([]);
+            for (let j = 0; j < 3; j++) {
+            gameBoard.board[i].push([]);
+            }
+        }
+
+    }
+
+    const resetBoardButton = document.querySelector('#resetBoard');
+    resetBoardButton.addEventListener('click', resetBoard);
+
+    return { board, dropToken, displayBoard, resetBoard };
 })();
 
 
