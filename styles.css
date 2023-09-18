@@ -96,8 +96,10 @@ h1 {
 
 /* Modal content */
 .modal-content {
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
-    padding: 20px;
+    padding: 50px;
     border-radius: 5px;
     text-align: center;
     font-family: 'Luckiest Guy', cursive;
