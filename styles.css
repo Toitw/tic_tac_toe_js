@@ -1,8 +1,40 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 2rem 0;
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+}
+
 .board {
     display: grid;
-    grid-template-columns: repeat(3, 100px); /* Adjust the size of the cells as needed */
+    grid-template-columns: repeat(3, 100px); 
     gap: 5px;
-    width: 320px; /* Adjust the width of the board as needed */
+    width: 320px; 
     margin: 20px auto;
 }
 
@@ -23,6 +55,15 @@
     background-color: #e0e0e0; /* Cell color on hover */
 }
 
+#resetBoard {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}   
+
 /* Modal */
 .modal {
     display: none;
@@ -36,6 +77,8 @@
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    border: 5px solid #ff416c;
+    border-radius: 10px;
 }
 
 /* Modal content */
@@ -44,19 +87,30 @@
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.2rem;
+    color: #ff416c;
+    text-shadow: 2px 2px #fff;
 }
 
 /* Style the reset button */
-#reset-button {
+button {
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-#reset-button:hover {
+button:hover {
+    background-color: #0056b3;
+}
+
+button:hover {
     background-color: #0056b3;
 }
 
